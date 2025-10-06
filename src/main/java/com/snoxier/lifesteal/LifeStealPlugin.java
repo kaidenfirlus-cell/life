@@ -20,4 +20,52 @@ public class LifeStealPlugin extends JavaPlugin {
 
     public static NamespacedKey KEY_SOUL;
     public static NamespacedKey KEY_SHARD;
-    public static Names
+    public static NamespacedKey KEY_HEART;
+    public static NamespacedKey KEY_DRAGON_SOUL;
+
+    public static final int CMD_SOUL = 1010;
+    public static final int CMD_SHARD = 1011;
+    public static final int CMD_HEART = 1012;
+    public static final int CMD_DRAGON_SOUL = 1020;
+
+    public static LifeStealPlugin get() { return instance; }
+
+    @Override
+    public void onEnable() {
+        instance = this;
+        saveDefaultConfig();
+
+        KEY_SOUL = new NamespacedKey(this, "soul");
+        KEY_SHARD = new NamespacedKey(this, "heart_shard");
+        KEY_HEART = new NamespacedKey(this, "heart");
+        KEY_DRAGON_SOUL = new NamespacedKey(this, "dragon_soul");
+
+        heartManager = new HeartManager(this);
+        Items.registerRecipes();
+
+        // Listeners
+        Bukkit.getPluginManager().registerEvents(new MobSoulListener(), this);
+        Bukkit.getPluginManager().registerEvents(new DeathListener(heartManager), this);
+        Bukkit.getPluginManager().registerEvents(new InteractListener(heartManager), this);
+
+        // Optional RP prompt (no kick)
+        if (getConfig().getBoolean("resourcePack.offerOnJoin", true)) {
+            Bukkit.getPluginManager().registerEvents(new ResourcePackPrompt(this), this);
+        }
+
+        // Commands
+        getCommand("lsmax").setExecutor(new LSMaxCommand(heartManager));
+        getCommand("withdraw").setExecutor(new WithdrawCommand(heartManager));
+        getCommand("usepack").setExecutor(new UsePackCommand(this));
+
+        // Apply stored hearts to any already-online players on /reload
+        Bukkit.getOnlinePlayers().forEach(p -> heartManager.applyStoredHearts(p));
+    }
+
+    @Override
+    public void onDisable() {
+        saveConfig();
+    }
+
+    public FileConfiguration cfg() { return getConfig(); }
+}
