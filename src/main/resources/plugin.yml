@@ -1,0 +1,26 @@
+name: LifeStealDragon
+main: com.snoxier.lifesteal.LifeStealPlugin
+version: 1.0.0
+api-version: '1.21'
+authors: ["snoxier", "Ze best coder"]
+description: Lifesteal with Souls/Shards/Hearts, Dragon Soul drop, withdraw, caps; optional RP prompt.
+commands:
+  lsmax:
+    description: Set maximum hearts (global or per player)
+    usage: /<command> <maxHearts> [player]
+    permission: lifesteal.admin
+  withdraw:
+    description: Withdraw hearts into Heart items, leaving at least 1
+    usage: /<command> <amount>
+    permission: lifesteal.withdraw
+  usepack:
+    description: Load the server's resource pack
+    usage: /usepack
+    permission: lifesteal.usepack
+permissions:
+  lifesteal.admin:
+    default: op
+  lifesteal.withdraw:
+    default: true
+  lifesteal.usepack:
+    default: true

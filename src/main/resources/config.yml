@@ -1,0 +1,14 @@
+defaults:
+  maxHearts: 20
+global:
+  maxHearts: 20
+players: {}
+
+resourcePack:
+  url: "https://YOUR-DDNODES-LINK/LifeSteal_TPack.zip"
+  sha1: ""
+  prompt: "Would you like to use the server's texture pack?"
+  offerOnJoin: true
+  buttons:
+    yes: "Use Pack"
+    no: "No Thanks"
